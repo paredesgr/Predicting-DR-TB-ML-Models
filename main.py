@@ -53,28 +53,6 @@ from xgboost import XGBClassifier, plot_importance
 
 import pkg_resources
 
-libs = [
-    'itertools',  # estándar, no se necesita en requirements
-    'os', 'sys', 'time',  # estándar, no se necesita en requirements
-    'joblib',
-    'lightgbm',
-    'matplotlib',
-    'numpy',
-    'pandas',
-    'seaborn',
-    'scikit-learn',
-    'tensorflow',
-    'xgboost'
-]
-
-for lib in libs:
-    try:
-        version = pkg_resources.get_distribution(lib).version
-        print(f"{lib}=={version}")
-    except pkg_resources.DistributionNotFound:
-        print(f"{lib} no está instalado en el entorno actual.")
-
-
 # Define the base directory (the folder where this script is located)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -144,17 +122,17 @@ count_emb = (datasetRS.iloc[:, 0] == 1).sum()
 count_inh = (datasetRS.iloc[:, 1] == 1).sum()
 count_rif = (datasetRS.iloc[:, 2] == 1).sum()
 
-print("Aislados resistentes a EMB solamente: " , count_emb_s)
-print("Aislados resistentes a INH solamente: " , count_inh_s)
-print("Aislados resistentes a RIF solamente: " , count_rif_s)
-print("\nAislados resistentes a los 3 farmacos: ", count_emb_inh_rif)
-print("\nAislados resistentes a EMB y INH: ", count_emb_inh)
-print("Aislados resistentes a EMB y RIF: ", count_emb_rif)
-print("Aislados resistentes a INH y RIF: ", count_inh_rif)
-print("\nAislados susceptibles a los 3 farmacos: ", count_nada)
-print("\nAislados resistentes a EMB: ", count_emb)
-print("Aislados resistentes a INH: ", count_inh)
-print("Aislados resistentes a RIF: ", count_rif)
+print("EMB-resistant isolates only: " , count_emb_s)
+print("INH-resistant isolates only: " , count_inh_s)
+print("RIF-resistant isolates only: " , count_rif_s)
+print("\nIsolates resistant to all 3 drugs: ", count_emb_inh_rif)
+print("\nEMB and INH resistant isolates: ", count_emb_inh)
+print("EMB and RIF resistant isolates: ", count_emb_rif)
+print("INH and RIF resistant isolates: ", count_inh_rif)
+print("\nIsolates susceptible to all 3 drugs: ", count_nada)
+print("\nEMB-resistant isolates: ", count_emb)
+print("INH-resistant isolates: ", count_inh)
+print("RIF-resistant isolates: ", count_rif)
 
 etiqueta_negativa = ((datasetRS.iloc[:, 0] == 0) & (datasetRS.iloc[:, 1] == 0) & (datasetRS.iloc[:,2] == 0))
 cantidad_0 = np.count_nonzero(datasetRS[etiqueta_negativa] == 1, axis = 1)
@@ -168,26 +146,26 @@ cantidad_2 = np.count_nonzero(datasetRS[etiqueta_positiva_inh] == 1, axis = 1)
 etiqueta_positiva_rif = (datasetRS.iloc[:, 2] == 1)
 cantidad_3 = np.count_nonzero(datasetRS[etiqueta_positiva_rif] == 1, axis = 1)
 
-print("Media de mutaciones en aislados susceptibles a los 3 farmacos: {:.2f}".format(np.mean(cantidad_0)))
-print("Cantidad de aislados con susceptibilidad a los 3 farmacos: ",len(cantidad_0))
+print("Average mutations in isolates susceptible to the 3 drugs: {:.2f}".format(np.mean(cantidad_0)))
+print("Number of isolates susceptible to the 3 drugs: ", len(cantidad_0))
 
-print("\nMedia de mutaciones en aislados resistentes a EMB: {:.2f}".format(np.mean(cantidad_1)))
-print("Cantidad de aislados con resistencia a EMB: ",len(cantidad_1))
+print("\nAverage mutations in isolates resistant to EMB: {:.2f}".format(np.mean(cantidad_1)))
+print("Number of isolates resistant to EMB: ", len(cantidad_1))
 
-print("\nMedia de mutaciones en aislados resistentes a INH: {:.2f}".format(np.mean(cantidad_2)))
-print("Cantidad de aislados con resistencia a INH: ",len(cantidad_2))
+print("\nAverage mutations in isolates resistant to INH: {:.2f}".format(np.mean(cantidad_2)))
+print("Number of isolates resistant to INH: ", len(cantidad_2))
 
-print("\nMedia de mutaciones en aislados resistentes a RIF: {:.2f}".format(np.mean(cantidad_3)))
-print("Cantidad de aislados con resistencia a RIF: ",len(cantidad_3))
+print("\nAverage mutations in isolates resistant to RIF: {:.2f}".format(np.mean(cantidad_3)))
+print("Number of isolates resistant to RIF: ", len(cantidad_3))
 
-cantidad_1 = np.count_nonzero(datasetRS == 1, axis = 1)
-print("Media de mutaciones entre las 847 muestras y las +79k de posiciones:", np.mean(cantidad_1))
+cantidad_1 = np.count_nonzero(datasetRS == 1, axis=1)
+print("Average mutations across the 847 samples and the +79k positions:", np.mean(cantidad_1))
 
 #Training and test datasets
 
 trainr, testr =np.split(datasetRS.sample(frac=1, random_state=42), [int(.80*len(datasetRS))])
 
-print("Shape de conjuntos de train y test respectivamente \n")
+print("Shape of train and test sets respectively \n")
 print(trainr.shape)
 print(testr.shape)
 print("\n")
