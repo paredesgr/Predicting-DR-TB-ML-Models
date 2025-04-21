@@ -15,5 +15,5 @@ DOI: https://doi.org/10.3390/diagnostics15030279
 - José Luis Morales Reyes
 - Roberto Zenteno-Cuevas
 - Miguel-Ángel Guerrero-Chevannier
-- Raquel Muñiz-Salazar
-- Dora-Luz Flores
+- Raquel Muñiz-Salazar*
+- Dora-Luz Flores*
